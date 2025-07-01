@@ -1,0 +1,30 @@
+// Add to existing ModOptionsMenu
+AddOptionMenu "ModOptionsMenu" {
+    Submenu "Collectibles Tracker", "SCMv2_Options"
+}
+
+OptionMenu "SCMv2_Options" {
+    Title "Collectibles Tracker Options"
+    
+    StaticText " "
+    StaticText "Tracking Options", 1
+    StaticText " "
+    Option "Track Collectibles", "scm_track_collectibles", "OnOff"
+    Option "Track All Pickups", "scm_track_all_pickups", "OnOff"
+    Option "Auto-Reveal Map", "scm_autoreveal_map", "OnOff"
+    Option "Show Cleared Markers", "scm_show_cleared", "OnOff"
+    
+    StaticText " "
+    StaticText "Display Options", 1
+    StaticText " "
+    Slider "Marker Size", "scm_marker_size", 0.1, 2.0, 0.1, 1
+    Option "Marker Color Tint", "scm_marker_color", "MarkerColorTints"
+}
+
+OptionValue "MarkerColorTints" {
+    0, "Original Colors"
+    1, "Red Tint"  
+    2, "Green Tint"
+    3, "Blue Tint"
+    4, "Bright White"
+}

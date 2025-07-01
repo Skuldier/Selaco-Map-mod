@@ -1,0 +1,7 @@
+// Collectibles Mod CVars
+server bool scm_track_collectibles = true;
+server bool scm_track_all_pickups = false;
+server bool scm_autoreveal_map = true;
+server bool scm_show_cleared = true;
+server float scm_marker_size = 1.0;
+server int scm_marker_color = 0;
