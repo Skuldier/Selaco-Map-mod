@@ -483,7 +483,7 @@ class SCMv2_Handler : EventHandler {
             return MARKER_AMMO;
         }
         
-        // Check weapons - Note: capital W for Weapon class
+        // Check weapons
         if(item is "Weapon" || 
            className.IndexOf("WEAPON") >= 0 ||
            className.IndexOf("Shotgun") >= 0 ||
