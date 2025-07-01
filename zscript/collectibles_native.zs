@@ -120,7 +120,7 @@ class SCMv2_MarkerCollectible : SCMv2_MarkerBase {
     
     override void SetupMarkerStyle() {
         // Purple/sapphire tint for collectibles
-        SetTranslation("0:255=%[0,0,0]:[0.6,0.4,1.0]");
+        A_SetTranslation("0:255=%[0,0,0]:[0.6,0.4,1.0]");
     }
     
     States {
@@ -164,7 +164,7 @@ class SCMv2_MarkerArmor : SCMv2_MarkerBase {
     
     override void SetupMarkerStyle() {
         // Armor green translation
-        SetTranslation("0:255=%[0,0,0]:[0.2,1.0,0.2]");
+        A_SetTranslation("0:255=%[0,0,0]:[0.2,1.0,0.2]");
     }
     
     States {
@@ -232,7 +232,7 @@ class SCMv2_MarkerWeapon : SCMv2_MarkerBase {
     
     override void SetupMarkerStyle() {
         // Weapon green tint
-        SetTranslation("0:255=%[0,0,0]:[0.4,1.0,0.4]");
+        A_SetTranslation("0:255=%[0,0,0]:[0.4,1.0,0.4]");
     }
     
     States {
@@ -256,7 +256,7 @@ class SCMv2_MarkerPowerup : SCMv2_MarkerBase {
     
     override void SetupMarkerStyle() {
         // Purple/energy tint
-        SetTranslation("0:255=%[0,0,0]:[0.9,0.2,0.9]");
+        A_SetTranslation("0:255=%[0,0,0]:[0.9,0.2,0.9]");
     }
     
     override void UpdateVisuals() {
@@ -287,7 +287,7 @@ class SCMv2_MarkerSecret : SCMv2_MarkerBase {
     
     override void SetupMarkerStyle() {
         // Golden glow for secrets
-        SetTranslation("0:255=%[0,0,0]:[1.0,0.8,0.2]");
+        A_SetTranslation("0:255=%[0,0,0]:[1.0,0.8,0.2]");
     }
     
     override void UpdateVisuals() {
@@ -321,13 +321,13 @@ class SCMv2_MarkerKey : SCMv2_MarkerBase {
             string itemClass = trackedItem.GetClassName();
             
             if(itemClass.IndexOf("BLUE") >= 0) {
-                SetTranslation("0:255=%[0,0,0]:[0.3,0.7,1.0]");
+                A_SetTranslation("0:255=%[0,0,0]:[0.3,0.7,1.0]");
             } else if(itemClass.IndexOf("YELLOW") >= 0) {
-                SetTranslation("0:255=%[0,0,0]:[1.0,1.0,0.3]");
+                A_SetTranslation("0:255=%[0,0,0]:[1.0,1.0,0.3]");
             } else if(itemClass.IndexOf("RED") >= 0) {
-                SetTranslation("0:255=%[0,0,0]:[1.0,0.3,0.3]");
+                A_SetTranslation("0:255=%[0,0,0]:[1.0,0.3,0.3]");
             } else if(itemClass.IndexOf("PURPLE") >= 0) {
-                SetTranslation("0:255=%[0,0,0]:[0.8,0.3,0.8]");
+                A_SetTranslation("0:255=%[0,0,0]:[0.8,0.3,0.8]");
             }
         }
     }
@@ -353,7 +353,7 @@ class SCMv2_MarkerCleared : MasterMarkerCleared {
     
     override void BeginPlay() {
         super.BeginPlay();
-        SetTranslation("Ice"); // Grayscale effect
+        A_SetTranslation("Ice"); // Grayscale effect
     }
     
     States {
@@ -483,7 +483,7 @@ class SCMv2_Handler : EventHandler {
             return MARKER_AMMO;
         }
         
-        // Check weapons
+        // Check weapons - Note: capital W for Weapon class
         if(item is "Weapon" || 
            className.IndexOf("WEAPON") >= 0 ||
            className.IndexOf("Shotgun") >= 0 ||
