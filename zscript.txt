@@ -1,2 +1,2 @@
 version "4.6"
-#include "zscript/collectibles.zs"
+#include "zscript/collectibles_native.zs"

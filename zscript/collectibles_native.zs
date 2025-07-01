@@ -483,8 +483,10 @@ class SCMv2_Handler : EventHandler {
             return MARKER_AMMO;
         }
         
-        // Check weapons
-        if(item is "Weapon" || 
+        // Check weapons - WORKAROUND for parser bug
+        // Using cast instead of 'is' operator
+        let wpn = Weapon(item);
+        if(wpn || 
            className.IndexOf("WEAPON") >= 0 ||
            className.IndexOf("Shotgun") >= 0 ||
            className.IndexOf("Cricket") >= 0) {
