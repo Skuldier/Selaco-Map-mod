@@ -98,7 +98,7 @@ class SCMv2_MarkerBase : MasterMarker {
         if (CVar.GetCVar("scm_show_cleared", players[consoleplayer]).GetBool()) {
             let cleared = Actor.Spawn("SCMv2_MarkerCleared", pos);
             if (cleared) {
-                cleared.scale = scale * 0.7;
+                cleared.scale = scale * 0.7;  // Make cleared markers 70% of original size
                 SCMv2_MarkerCleared(cleared).previousCategory = markerCategory;
             }
         }
@@ -106,16 +106,25 @@ class SCMv2_MarkerBase : MasterMarker {
     }
 }
 
-// Collectible marker - Uses flare with purple tint
+// Collectible marker - Uses data pad sprite with purple glow
 class SCMv2_MarkerCollectible : SCMv2_MarkerBase {
     default {
-        Scale 0.7;
+        Scale 0.5;  // Standardized
         Alpha 0.9;
     }
     
     override void BeginPlay() {
         super.BeginPlay();
         markerCategory = MARKER_COLLECTIBLE;
+        
+        // Try to use actual collectible sprites
+        if(trackedItem) {
+            string itemClass = trackedItem.GetClassName();
+            if(itemClass.IndexOf("DataPad") >= 0 || itemClass.IndexOf("DataLog") >= 0) {
+                sprite = GetSpriteIndex("LOGB");  // Data log sprite
+                frame = 0;
+            }
+        }
     }
     
     override void SetupMarkerStyle() {
@@ -125,15 +134,15 @@ class SCMv2_MarkerCollectible : SCMv2_MarkerBase {
     
     States {
         Spawn:
-            PFLA H -1 Bright;
+            PFLA H -1 Bright;  // Purple flare as default
             Stop;
     }
 }
 
-// Health marker - Uses native health icon
+// Health marker - Already uses native health cross icon
 class SCMv2_MarkerHealth : SCMv2_MarkerBase {
     default {
-        Scale 0.4;
+        Scale 0.5;  // Standardized
         Alpha 0.7;
         RenderStyle "Normal"; // Icon looks better without additive
     }
@@ -145,16 +154,17 @@ class SCMv2_MarkerHealth : SCMv2_MarkerBase {
     
     States {
         Spawn:
-            ZZZD A -1 Bright;
+            ZZZD A -1 Bright;  // Medical cross icon
             Stop;
     }
 }
 
-// Armor marker - Green flare
+// Armor marker - Uses armor pickup sprite
 class SCMv2_MarkerArmor : SCMv2_MarkerBase {
     default {
-        Scale 0.4;
+        Scale 0.5;  // Standardized
         Alpha 0.7;
+        RenderStyle "Normal";  // Better for icon visibility
     }
     
     override void BeginPlay() {
@@ -163,21 +173,21 @@ class SCMv2_MarkerArmor : SCMv2_MarkerBase {
     }
     
     override void SetupMarkerStyle() {
-        // Armor green translation
+        // Green tint for armor
         A_SetTranslation("0:255=%[0,0,0]:[0.2,1.0,0.2]");
     }
     
     States {
         Spawn:
-            PFLA H -1 Bright;
+            BON2 A -1 Bright;  // Try armor bonus sprite
             Stop;
     }
 }
 
-// Ammo marker - Dynamic icon selection
+// Ammo marker - Already has dynamic icon selection
 class SCMv2_MarkerAmmo : SCMv2_MarkerBase {
     default {
-        Scale 0.35;
+        Scale 0.5;  // Standardized
         Alpha 0.5;
         RenderStyle "Translucent";
     }
@@ -218,7 +228,7 @@ class SCMv2_MarkerAmmo : SCMv2_MarkerBase {
     }
 }
 
-// Weapon marker - Green weapon flare
+// Weapon marker - Uses the actual pickup sprite
 class SCMv2_MarkerWeapon : SCMv2_MarkerBase {
     default {
         Scale 0.5;
@@ -228,30 +238,44 @@ class SCMv2_MarkerWeapon : SCMv2_MarkerBase {
     override void BeginPlay() {
         super.BeginPlay();
         markerCategory = MARKER_WEAPON;
+        
+        // Try to use the actual weapon pickup's sprite
+        if(trackedItem && trackedItem.sprite > 0) {
+            sprite = trackedItem.sprite;
+            frame = trackedItem.frame;
+        }
     }
     
     override void SetupMarkerStyle() {
-        // Weapon green tint
-        A_SetTranslation("0:255=%[0,0,0]:[0.4,1.0,0.4]");
+        // Light green glow for weapons
+        A_SetTranslation("0:255=%[0,0,0]:[0.7,1.0,0.7]");
     }
     
     States {
         Spawn:
-            PFLA H -1 Bright;
+            #### # -1 Bright;  // Uses dynamic sprite
+            VOXE L -1 Bright;  // Fallback
             Stop;
     }
 }
 
-// Powerup marker - Rotating purple energy
+// Powerup marker - Uses rotating orb with purple energy
 class SCMv2_MarkerPowerup : SCMv2_MarkerBase {
     default {
-        Scale 0.55;
+        Scale 0.5;  // Standardized
         Alpha 0.9;
+        RenderStyle "Add";  // Glowing effect
     }
     
     override void BeginPlay() {
         super.BeginPlay();
         markerCategory = MARKER_POWERUP;
+        
+        // Try to use actual powerup sprite
+        if(trackedItem && trackedItem.sprite > 0) {
+            sprite = trackedItem.sprite;
+            frame = trackedItem.frame;
+        }
     }
     
     override void SetupMarkerStyle() {
@@ -267,15 +291,16 @@ class SCMv2_MarkerPowerup : SCMv2_MarkerBase {
     
     States {
         Spawn:
-            PFLA H -1 Bright;
+            #### # -1 Bright;  // Uses dynamic sprite
+            PFLA H -1 Bright;  // Fallback purple flare
             Stop;
     }
 }
 
-// Secret marker - Intense golden glow
+// Secret marker - Intense golden star
 class SCMv2_MarkerSecret : SCMv2_MarkerBase {
     default {
-        Scale 0.65;
+        Scale 0.5;  // Standardized
         Alpha 1.0;
         RenderStyle "Add";
     }
@@ -299,12 +324,12 @@ class SCMv2_MarkerSecret : SCMv2_MarkerBase {
     
     States {
         Spawn:
-            PFLA H -1 Bright;
+            BON3 A -1 Bright;  // Try using soul sphere sprite for secrets
             Stop;
     }
 }
 
-// Key marker - Color-coded keys
+// Key marker - Already uses color-coded VOXE sprite
 class SCMv2_MarkerKey : SCMv2_MarkerBase {
     default {
         Scale 0.5;
@@ -334,12 +359,12 @@ class SCMv2_MarkerKey : SCMv2_MarkerBase {
     
     States {
         Spawn:
-            VOXE L -1 Bright;
+            VOXE L -1 Bright;  // Key sprite
             Stop;
     }
 }
 
-// Cleared marker - Faded indicator
+// Cleared marker - Faded X indicator
 class SCMv2_MarkerCleared : MasterMarkerCleared {
     int previousCategory;
     
@@ -348,7 +373,7 @@ class SCMv2_MarkerCleared : MasterMarkerCleared {
         +FORCEXYBILLBOARD
         Alpha 0.2;
         RenderStyle "Translucent";
-        Scale 0.4;
+        Scale 0.35;  // Slightly smaller than active markers
     }
     
     override void BeginPlay() {
@@ -358,7 +383,7 @@ class SCMv2_MarkerCleared : MasterMarkerCleared {
     
     States {
         Spawn:
-            PFLA H -1;
+            PFLA H -1;  // Faded flare
             Stop;
     }
 }
@@ -457,46 +482,53 @@ class SCMv2_Handler : EventHandler {
             return MARKER_KEY;
         }
         
-        // Check health items
-        if(item is "Health" || 
+        // Check health items - String matching approach
+        if(className.IndexOf("Health") >= 0 ||
            className.IndexOf("Medkit") >= 0 || 
            className.IndexOf("HEALTH") >= 0 ||
            className.IndexOf("Medical") >= 0 ||
-           className.IndexOf("Protein") >= 0) {
+           className.IndexOf("Protein") >= 0 ||
+           className.IndexOf("Heal") >= 0) {
             return MARKER_HEALTH;
         }
         
-        // Check armor
-        if(item is "Armor" || 
+        // Check armor - String matching approach
+        if(className.IndexOf("Armor") >= 0 ||
            className.IndexOf("ARMOR") >= 0 ||
-           className.IndexOf("Vest") >= 0) {
+           className.IndexOf("Vest") >= 0 ||
+           className.IndexOf("VEST") >= 0) {
             return MARKER_ARMOR;
         }
         
-        // Check ammo - Selaco specific
-        if(item is "Ammo" || 
+        // Check ammo - String matching approach
+        if(className.IndexOf("Ammo") >= 0 ||
            className.IndexOf("AmmoPickup") >= 0 ||
            className.IndexOf("ROUNDS") >= 0 || 
            className.IndexOf("SHELL") >= 0 ||
            className.IndexOf("ENERGY") >= 0 ||
-           className.IndexOf("Clip") >= 0) {
+           className.IndexOf("Clip") >= 0 ||
+           className.IndexOf("Reserve") >= 0) {
             return MARKER_AMMO;
         }
         
-        // Check weapons - FIXED: Proper null check
-        Weapon wpn = Weapon(item);
-        if(wpn != null || 
-           className.IndexOf("WEAPON") >= 0 ||
+        // Check weapons - String matching only (avoiding type check issues)
+        if(className.IndexOf("WEAPON") >= 0 ||
+           className.IndexOf("Weapon") >= 0 ||
+           className.IndexOf("_PICKUP") >= 0 ||
            className.IndexOf("Shotgun") >= 0 ||
            className.IndexOf("Cricket") >= 0 ||
            className.IndexOf("SMG") >= 0 ||
            className.IndexOf("Rifle") >= 0 ||
-           className.IndexOf("Nailgun") >= 0) {
+           className.IndexOf("Pistol") >= 0 ||
+           className.IndexOf("Nailgun") >= 0 ||
+           className.IndexOf("Railgun") >= 0 ||
+           className.IndexOf("PlasmaRifle") >= 0 ||
+           className.IndexOf("DMR") >= 0) {
             return MARKER_WEAPON;
         }
         
-        // Check powerups
-        if(item is "PowerupGiver" || 
+        // Check powerups - String matching approach
+        if(className.IndexOf("PowerupGiver") >= 0 ||
            className.IndexOf("Powerup") >= 0 ||
            className.IndexOf("Power") >= 0) {
             return MARKER_POWERUP;
