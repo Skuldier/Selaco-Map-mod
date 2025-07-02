@@ -1,2 +1,10 @@
 [enu default]
+COLLECTIBLES_MAP_REVEALED = "\\c[yellow]Collectibles Mod v4.0: Map revealed!";
 MAPICON_COLLECTIBLE = "Collectible";
+MAPICON_HEALTH = "Health";
+MAPICON_ARMOR = "Armor";
+MAPICON_AMMO = "Ammunition";
+MAPICON_WEAPON = "Weapon";
+MAPICON_POWERUP = "Powerup";
+MAPICON_KEY = "Keycard";
+MAPICON_SECRET = "Secret";

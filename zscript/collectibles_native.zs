@@ -1,5 +1,5 @@
 // Selaco Collectibles Map Mod v4.0 - Native Sprite Edition
-// Uses Selaco's built-in sprites for perfect visual integration
+// Fixed for Selaco v0.34+ compatibility
 
 // Marker categories enum
 enum EMarkerCategory {
@@ -483,13 +483,15 @@ class SCMv2_Handler : EventHandler {
             return MARKER_AMMO;
         }
         
-        // Check weapons - WORKAROUND for parser bug
-        // Using cast instead of 'is' operator
-        let wpn = Weapon(item);
-        if(wpn || 
+        // Check weapons - FIXED: Proper null check
+        Weapon wpn = Weapon(item);
+        if(wpn != null || 
            className.IndexOf("WEAPON") >= 0 ||
            className.IndexOf("Shotgun") >= 0 ||
-           className.IndexOf("Cricket") >= 0) {
+           className.IndexOf("Cricket") >= 0 ||
+           className.IndexOf("SMG") >= 0 ||
+           className.IndexOf("Rifle") >= 0 ||
+           className.IndexOf("Nailgun") >= 0) {
             return MARKER_WEAPON;
         }
         
@@ -613,6 +615,6 @@ class SCMv2_Handler : EventHandler {
             level.lines[i].flags |= Line.ML_MAPPED;
         }
         
-        Console.Printf("\c[yellow]Collectibles Mod v4.0: Map revealed!");
+        Console.Printf("\\c[yellow]Collectibles Mod v4.0: Map revealed!");
     }
 }

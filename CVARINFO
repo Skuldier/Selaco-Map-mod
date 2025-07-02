@@ -1,7 +1,14 @@
 // Collectibles Mod CVars
 server bool scm_track_collectibles = true;
 server bool scm_track_all_pickups = false;
+server bool scm_track_health = true;
+server bool scm_track_armor = true;
+server bool scm_track_ammo = true;
+server bool scm_track_weapons = true;
+server bool scm_track_powerups = true;
+server bool scm_track_keys = true;
 server bool scm_autoreveal_map = true;
 server bool scm_show_cleared = true;
 server float scm_marker_size = 1.0;
-server int scm_marker_color = 0;
+server int scm_marker_style = 0;
+server int scm_update_frequency = 5;

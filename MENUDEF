@@ -10,21 +10,29 @@ OptionMenu "SCMv2_Options" {
     StaticText "Tracking Options", 1
     StaticText " "
     Option "Track Collectibles", "scm_track_collectibles", "OnOff"
-    Option "Track All Pickups", "scm_track_all_pickups", "OnOff"
-    Option "Auto-Reveal Map", "scm_autoreveal_map", "OnOff"
-    Option "Show Cleared Markers", "scm_show_cleared", "OnOff"
+    Option "Track Health Items", "scm_track_health", "OnOff"
+    Option "Track Armor Items", "scm_track_armor", "OnOff"
+    Option "Track Ammunition", "scm_track_ammo", "OnOff"
+    Option "Track Weapons", "scm_track_weapons", "OnOff"
+    Option "Track Powerups", "scm_track_powerups", "OnOff"
+    Option "Track Keycards", "scm_track_keys", "OnOff"
+    Option "Track ALL Pickups", "scm_track_all_pickups", "OnOff"
     
     StaticText " "
     StaticText "Display Options", 1
     StaticText " "
+    Option "Auto-Reveal Map", "scm_autoreveal_map", "OnOff"
+    Option "Show Cleared Markers", "scm_show_cleared", "OnOff"
     Slider "Marker Size", "scm_marker_size", 0.1, 2.0, 0.1, 1
-    Option "Marker Color Tint", "scm_marker_color", "MarkerColorTints"
+    Option "Marker Style", "scm_marker_style", "MarkerStyles"
+    Slider "Update Frequency", "scm_update_frequency", 1, 35, 5, 0
+    
+    StaticText " "
+    StaticText "Performance: Lower update frequency for better FPS", "White"
 }
 
-OptionValue "MarkerColorTints" {
-    0, "Original Colors"
-    1, "Red Tint"  
-    2, "Green Tint"
-    3, "Blue Tint"
-    4, "Bright White"
+OptionValue "MarkerStyles" {
+    0, "Native Icons"
+    1, "Flare Only"
+    2, "Minimal"
 }
